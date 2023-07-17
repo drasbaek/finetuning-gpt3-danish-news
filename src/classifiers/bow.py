@@ -95,13 +95,13 @@ def evaluate_LR(lr_model, X_test, Y_test):
     recall = metrics.recall_score(Y_test, Y_predict)
 
     # make into dictionary 
-    metrics = {"Accuracy": round(accuracy, 3),
+    metrics_dict = {"Accuracy": round(accuracy, 3),
                 "F1": round(f1_score, 3),
                 "Precision": round(precision, 3),
                 "Recall": round(recall, 3)
                 } 
 
-    return metrics 
+    return metrics_dict 
     
 def main(): 
     # define paths
