@@ -1,5 +1,5 @@
 '''
-Script for training and evaluating the simple classifier BOW to distinguish between GPT-3 generated articles and human written articles.
+Script for training and evaluating the simple classifier TF-IDF to distinguish between GPT-3 generated articles and human written articles.
 
 Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023)
 '''
@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 # vectoriser and model 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
 # evaluate classifier 
@@ -48,9 +48,9 @@ def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
     return train_data, test_data
     
 
-def BOW_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
+def TFIDF_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
     '''
-    Vectorise clean data using a bag-of-words (BOW) vectoriser 
+    Vectorise clean data using a TF-IDF vectorizer
 
     Args
         train_data: dataframe containing training data
@@ -62,7 +62,7 @@ def BOW_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
     '''
 
     # initialise vectoriser 
-    vectorizer = CountVectorizer(lowercase=False) # lowercase = false as text is already lower-cased
+    vectorizer = TfidfVectorizer(lowercase=False) # lowercase = false as text is already lower-cased
 
     # vectorise train and test 
     X_train = vectorizer.fit_transform(train_data["text"]).toarray()
@@ -79,12 +79,12 @@ def evaluate_LR(lr_model, X_test, Y_test):
     '''
     Evaluate a fitted logistic regression, extracting accuracy, f1, precision, recall
 
-    Args:
+    Args
         lr_model: logistic regression model 
-        X_test = test data 
-        Y_test = true labels for test data 
+        X_test: test data 
+        Y_test: true labels for test data 
 
-    Returns: 
+    Returns 
         metrics_dict: dictionary of metrics (accuracy, F1, precision, recall)
     '''
 
@@ -118,7 +118,7 @@ def main():
 
     # vectorise data
     print("vectorising data ...")
-    X_train, X_test, Y_train, Y_test = BOW_vectorize(train_data, test_data)
+    X_train, X_test, Y_train, Y_test = TFIDF_vectorize(train_data, test_data)
 
     # intialise logistic regression
     lr = LogisticRegression(solver="lbfgs", C=10, random_state=10, max_iter=250)
