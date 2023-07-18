@@ -38,8 +38,8 @@ def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
     test_data = pd.read_csv(test_path)
 
     # remove punctuations 
-    train_data["text"] = train_data["text"].str.replace(r'[^\w\s]+', '')
-    test_data["text"] = test_data["text"].str.replace(r'[^\w\s]+', '')
+    train_data["text"] = train_data["text"].str.replace(r'[^\w\s]+', '', regex=True)
+    test_data["text"] = test_data["text"].str.replace(r'[^\w\s]+', '', regex=True)
     
     # make lower case 
     train_data["text"] = train_data["text"].str.lower()
