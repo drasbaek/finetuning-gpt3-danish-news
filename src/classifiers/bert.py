@@ -3,7 +3,7 @@ Script for fine-tuning and evaluating the BERT classifier in distinguishing betw
 
 Relies on functions defined in modules/finetune_fns.py
 
-Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023)
+Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023).
 '''
 
 # utils 

@@ -1,7 +1,7 @@
 '''
-Script for fine-tuning and evaluating the BERT classifier in distinguishing between GPT-3 generated articles and human written articles.
+Script with functions used for fine-tuning and evaluating the BERT classifier. Used in the "bert.py" script. 
 
-Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023)
+Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023).
 '''
 import pathlib
 from functools import partial 
