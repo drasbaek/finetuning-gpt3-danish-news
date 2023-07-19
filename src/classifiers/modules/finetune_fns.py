@@ -4,9 +4,10 @@ Script for fine-tuning and evaluating the BERT classifier in distinguishing betw
 Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023)
 '''
 import pathlib
+from functools import partial 
 
 # data wrangling 
-import datasets
+from datasets import Dataset, DatasetDict
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 
@@ -56,7 +57,7 @@ def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
     test_ds = Dataset.from_pandas(test_data, preserve_index = False)
 
     # combine all three datasets into one dataset dict 
-    dataset = datasets.DatasetDict({"train":train_ds,"eval":eval_ds, "test":test_ds})
+    dataset = DatasetDict({"train":train_ds,"eval":eval_ds, "test":test_ds})
 
     return dataset 
 
@@ -188,7 +189,7 @@ def plot_loss(train_loss, val_loss, epochs, savepath, filename): # adapted from 
     # save fig 
     plt.savefig(fullpath / filename, dpi=300)
 
-def finetune(dataset, model_name:str, n_labels:int, id2label:dict, label2id:dict, training_args, early_stop_patience:int=3): 
+def finetune(dataset, model_name:str, n_labels:int, training_args, early_stop_patience:int=3): 
     '''
     Fine-tune model on dataset. Tokenizes dataset, defines datacollator, earlystop, and trainer.
 
@@ -237,3 +238,66 @@ def finetune(dataset, model_name:str, n_labels:int, id2label:dict, label2id:dict
     trainer.train()
 
     return trainer, tokenized_data
+
+def get_metrics(trainer, tokenized_ds_split, raw_ds_split, id2label:dict, path, filename):
+    '''
+    Get overall metrics (accuracy, f1, precision, recall) stratified by class along with predictions/true labels per example ('text' column). 
+    Overall metrics are saved as .txt file. Predictions are saved as .csv file.
+
+    Args:
+        - trainer: trainer object (from transformers)
+        - tokenized_ds_split: tokenized dataset split (dict) e.g., tokenized_data["train"]
+        - raw_ds_split: raw dataset split (dict) e.g., raw_data["train"]
+        - id2label: dictionary with label id (key) and label (value)
+        - path: directory where folder is created to save metrics
+        - filename: filename of metrics
+
+    Returns: 
+        -  model_metrics: classfication report by scikit-learn with model metrics
+        -  data: dataframe with 'text' column, 'lang' column from original ds along with true labels, predicted labels, probabilities and logits. 
+
+    Outputs:
+        - .txt file with metrics
+        - .csv file with predictions
+    '''
+
+    # make predictions 
+    raw_predictions = trainer.predict(tokenized_ds_split)
+
+    # extract prediction with highest probability (predicted labels)
+    y_pred = np.argmax(raw_predictions.predictions, axis=-1)
+
+    # get probabilities
+    probabilities = torch.nn.Softmax(dim=-1)(torch.tensor(raw_predictions.predictions))
+
+    # get true labels 
+    y_true = raw_predictions.label_ids
+
+    # get summary metrics 
+    model_metrics = classification_report(y_true, y_pred, target_names=["negative", "neutral", "positive"])
+
+    # get data 
+    data = pd.DataFrame({"prediction":y_pred.flatten(),
+                        "true_value":y_true.flatten(),
+                        "text":raw_ds_split["text"],
+                        "lang":raw_ds_split["lang"],
+                        "probabilities": [str(val) for val in probabilities.detach().numpy()],
+                        "logits": [str(val) for val in raw_predictions.predictions]
+                        })
+    
+    # add prediction labels
+    data["prediction_label"] = data["prediction"].map(id2label)
+    data["true_label"] = data["true_value"].map(id2label)
+
+    # save metrics
+    metrics_path = path / "metrics"
+    metrics_path.mkdir(exist_ok=True, parents=True)
+    with open(metrics_path / f"{filename}_metrics.txt", "w") as file: 
+        file.write(model_metrics)
+
+    # save data
+    predictions_path = path / "predictions"
+    predictions_path.mkdir(exist_ok=True, parents=True)
+    data.to_csv(predictions_path / f"{filename}_predictions.csv")
+
+    return model_metrics, data

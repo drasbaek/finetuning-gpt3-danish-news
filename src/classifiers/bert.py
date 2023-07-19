@@ -10,9 +10,14 @@ Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Genera
 import pathlib
 import argparse
 
+# to define parameters for model 
+from transformers import TrainingArguments 
+
 # custom modules
 from modules.finetune_fns import finetune, get_loss, plot_loss, get_metrics, prepare_data
-from modules.data_fns import load_datasets
+
+# save log history
+import pickle
 
 def input_parse():
     parser = argparse.ArgumentParser()
@@ -26,23 +31,24 @@ def input_parse():
 
     return args
 
+
 def main(): 
     # intialise args 
     args = input_parse()
 
     # define paths (for saving model and loss curve)
     path = pathlib.Path(__file__)
-    modeloutpath = path.parents[1] / "models"
-    resultspath = path.parents[1] / "results"
+    output_folder = path.parents[2] / "model"
+    resultspath = path.parents[2] / "results"
 
-    # ensure that modelpath exists
-    modeloutpath.mkdir(exist_ok=True, parents=True)
-
-    # import data 
+    # import data
     path_train = path.parents[2] / "data" / "labelled_data_for_classifier.csv"
     path_test =  path.parents[2] / "data" / "test_data_classifier.csv"
 
     ds = prepare_data(path_train, path_test)
+
+    # define model 
+    model_name = "NbAiLab/nb-bert-large"
 
     # login for push to hub functionality! But only if "-hub" flag is specified
     if args.push_to_hub: 
@@ -54,14 +60,13 @@ def main():
 
         login(hf_token)
 
-
     # define batch_size 
-    batch_size = 64
+    batch_size = 24
 
     # define training arguments 
     training_args = TrainingArguments(
-        output_dir = modeloutpath / output_folder, 
-        push_to_hub = args.push_to_hub,
+        output_dir = output_folder,  
+        push_to_hub = args.push_to_hub, # only if flag is specified 
         learning_rate=2e-5,
         per_device_train_batch_size = batch_size, 
         per_device_eval_batch_size = batch_size, 
@@ -97,3 +102,6 @@ def main():
 
     # evaluate, save summary metrics 
     get_metrics(trainer,  tokenized_data["test"], ds["test"], id2label, resultspath, f"{args.model}_all")
+
+if __name__ == "__main__":
+    main()
