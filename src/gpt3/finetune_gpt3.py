@@ -16,8 +16,8 @@ import re
 # gpt3 finetuning
 import openai 
 
-# custom modules
-from modules.gpt3_helpers import import_token, remove_datetime_from_model, find_existing_finetune_id
+# custom functions
+from modules.gpt3_helpers import import_token, find_existing_finetune_id
 
 def create_file(file_path:pathlib.Path(), target_filename:str):
     '''
