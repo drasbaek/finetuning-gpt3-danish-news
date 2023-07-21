@@ -71,15 +71,15 @@ def create_file(file_path:pathlib.Path(), target_filename:str):
     return file_id
 
 def remove_datetime_from_model(input_string):
-    '''
-    Remove date and time from the input string in OpenAI finetunes
+    """
+    Remove date and time from the input string.
 
-    Args
+    Args:
         input_string (str): The input string.
 
-    Returns
+    Returns:
         str: The input string with date and time removed.
-    '''
+    """
     model_parts = input_string.split(":")
     last_part = model_parts[-1]
     if "-" in last_part:
@@ -88,13 +88,40 @@ def remove_datetime_from_model(input_string):
         last_part_without_datetime = last_part.split(":")[0]
     return ':'.join(model_parts[:-1]) + ":" + last_part_without_datetime
 
+def find_existing_finetune_id(existing_finetunes, target_finetune):
+    """
+    Find the ID of an existing fine-tune with the specified target_finetune suffix.
+
+    Args:
+        existing_finetunes (dict): A dictionary containing the list of existing fine-tunes.
+        target_finetune (str): The name to identify the specific fine-tune.
+
+    Returns:
+        str or None: The ID of the existing fine-tune, or None if not found.
+    """
+    existing_finetune_id = None
+    for finetune_info in existing_finetunes["data"]:
+        try:
+            finetuned_mdl = finetune_info.get("fine_tuned_model")
+            if finetuned_mdl: # only if there is a finetuned_mdl (if it is cancelled, it may be recorded as existing, but with no entry in "fine_tuned_model"
+                # remove datetime from mdl suffix
+                finetuned_mdl_without_dt = remove_datetime_from_model(finetuned_mdl)
+
+                # remove everything but the target name (specified mdl suffix)
+                finetuned_name = finetuned_mdl_without_dt.split(":")[-1]
+
+                # if the target_finetune is the same as the mdl suffix in existing_finetunes, then update the existing_finetune_id
+                if target_finetune == finetuned_name:
+                    existing_finetune_id = finetune_info.get("id")  
+                    break
+        except KeyError:
+            print("Error: finetune_info has no 'fine_tuned_model' key.")
+
+    return existing_finetune_id
+
 def create_finetune(training_file_id, target_finetune, n_epochs, model):
     '''
-    Create a fine-tune IF a fine-tune with the specified suffix (target_name) does not exist already.
-
-    NB. Little misleading that is is called SUFFIX as it appears in the middle of the name e.g., "finetune-dummy" in:
-        davinci:finetune-dummy-2023-07-20-14-14-14
-    But SUFFIX is what the parameter is called in openai.FineTune.create()
+    Create a fine-tune IF a fine-tune with the specified suffix does not exist already.
 
     Args:
         training_file_id: The ID of the training file to use in the fine-tune.
@@ -109,28 +136,10 @@ def create_finetune(training_file_id, target_finetune, n_epochs, model):
     # Retrieve a list of existing fine-tunes
     existing_finetunes = openai.FineTune.list()
 
-    # parse the data into a dictionary
-    existing_finetunes_dict = dict(existing_finetunes)
+    # Find the ID of the existing fine-tune with the specified suffix
+    existing_finetune_id = find_existing_finetune_id(existing_finetunes, target_finetune)
 
-    # Check if a fine-tune with the specified suffix (target_name) exists
-    existing_finetune_id = None
-    for finetune_info in existing_finetunes["data"]:
-        try:
-            finetuned_mdl = finetune_info.get("fine_tuned_model")
-            if finetuned_mdl: # only if there is a finetuned_mdl (if it is cancelled, it may be recorded as existing, but with no entry in "fine_tuned_model")
-                # remove datetime from mdl suffix
-                finetuned_mdl_without_dt = remove_datetime_from_model(finetuned_mdl)
-                # remove everything but the target name (specified mdl suffix)
-                finetuned_name = finetuned_mdl_without_dt.split(":")[-1]
-                
-                # if the target_finetune is the same as the mdl suffix in existing_finetunes, then update the existing_finetune_id
-                if target_finetune == finetuned_name:
-                    existing_finetune_id = finetune_info.get("id")  # check if "id" key exists and get its value
-                    break
-        except KeyError:
-            print("Error: finetune_info has no 'fine_tuned_model' key.")
-
-    # If the fine-tune with the specified target name does not exist, create a new one
+    # If the fine-tune with the specified suffix does not exist, create a new one
     if existing_finetune_id is None:
         print("Creating Fine-Tune ...")
         finetune = openai.FineTune.create(
@@ -142,10 +151,11 @@ def create_finetune(training_file_id, target_finetune, n_epochs, model):
             learning_rate_multiplier=0.2,
             prompt_loss_weight=0.01, 
         )
-        finetune_id = finetune["id"]
+        finetune_id = finetune.get("id")  # Check if "id" key exists and get its value
     else:
         finetune_id = existing_finetune_id
-    return existing_finetune_id
+    
+    return finetune_id
     
 
 def main(): 
