@@ -117,7 +117,7 @@ def main():
     file_id = create_file(path_dummydata, target_filename)
 
     # create finetune, if finetune with the specific suffix does not exist
-    finetune_id = create_finetune(file_id, "finetune-dummy", 2, "davinci")
+    finetune_id, finetune_mdl = create_finetune(file_id, "finetune-dummy", 2, "davinci")
 
     # retrieve exact finetune 
     finetune = openai.FineTune.retrieve(finetune_id)

@@ -65,9 +65,11 @@ def find_existing_finetune_id(existing_finetunes, target_finetune):
 
                 # if the target_finetune is the same as the mdl suffix in existing_finetunes, then update the existing_finetune_id
                 if target_finetune == finetuned_name:
-                    existing_finetune_id = finetune_info.get("id")  
+                    existing_finetune_id = finetune_info.get("id")
+                    fine_tuned_model = finetune_info.get("fine_tuned_model")  
                     break
         except KeyError:
             print("Error: finetune_info has no 'fine_tuned_model' key.")
 
-    return existing_finetune_id
+    return existing_finetune_id, fine_tuned_model
+
