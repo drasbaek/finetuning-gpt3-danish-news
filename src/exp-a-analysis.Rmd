@@ -1,0 +1,227 @@
+---
+title: "Experimental Data Inspection and Illustrations"
+author: "Anton Drasbæk"
+date: "10/20/2022"
+output: html_document
+---
+# Description
+This R-markdown is used to process, inspect and illustrate data from participants in Experiment A. 
+*NOTE: This markdown is merely for demonstration purposes and uses dummy data that is fabricated. Results will therefore not conform to the figures presented in the paper. Contract the authors for information about the actual data.*
+
+It can be seperated into the following sections after this description:
+1) Loading Packages and Data
+2) Basic insights
+3) Detailed Plotting
+4) Statistical Evaluations
+
+# Load Packages and Data
+## Load packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(httr, tidyverse, cvms, lme4)
+```
+
+## Load data
+```{r}
+data <- read_csv("/Users/antondrasbaek/Desktop/exp-A-dummy-data.csv")
+```
+
+# Basic insights
+## Overall classification accuracy
+```{r}
+data %>% 
+  summarize("How many percent were classified correctly?" = mean(accuracy),
+            "Standard Deviation" = sd(accuracy))
+```
+
+## Accuracy for synthetic news only
+```{r}
+data %>% 
+  filter(hm_correct == 2) %>% 
+  summarize("How many percent of GPT-3 (synthetic) articles were classified correctly?" = mean(accuracy))
+```
+
+## Accuracy for real news only
+```{r}
+data %>% 
+  filter(hm_correct == 1) %>% 
+  summarize("How many percent of GPT-3 (synthetic) articles were classified correctly?" = mean(accuracy))
+```
+
+## Which articles were the easiest and hardest to classify?
+```{r}
+easy <- data %>% 
+  group_by(article) %>% 
+  summarize("Lowest Accuracies" = mean(accuracy)) %>% 
+  arrange(`Lowest Accuracies`) %>% 
+  head(5)
+
+hard <- data %>% 
+  group_by(article) %>% 
+  summarize("Highest Accuracies" = mean(accuracy)) %>% 
+  arrange(desc(`Highest Accuracies`)) %>% 
+  head(5)
+
+print(easy)
+print(hard)
+rm(easy, hard)
+```
+
+
+## How many of participants had never seen GPT articles before?
+```{r}
+# count the occurrences of '1' in 'gpt3_knowledge'
+count_ones <- sum(data$gpt3_knowledge == 1, na.rm = TRUE)
+
+# calculate the total number of observations in 'gpt3_knowledge'
+total_observations <- length(data$gpt3_knowledge)
+
+# calculate the percentage of observations with value '1'
+percentage_ones <- (count_ones / total_observations) * 100
+
+# print
+cat("Percentage of observations with value 1 (Never seen GPT texts before):", percentage_ones, "%\n")
+```
+
+# Detailed Plotting 
+## Hit-miss confusion matrix for participant responses
+```{r}
+confusion <- table(data[,4:5])
+confusion <- as_tibble(confusion)
+
+plot_confusion_matrix(confusion,
+                      target_col = "hm_correct",
+                      prediction_col = "hm_answer",
+                      counts_col = "n")
+
+
+confusion %>% 
+  gt(
+    rownames_to_stub =  TRUE
+  ) %>% 
+  gt_theme_nytimes()
+
+
+# Set up the data frame
+df <- data.frame(confusion)
+colnames(df) <- c("Predicted", "Actual")
+
+# Create the confusion matrix table
+gt(df,
+   caption = "Confusion Matrix",
+   col_labels = c("Predicted", "Actual"),
+   style = cell_text_clip(),
+   cell_text = df,
+   cell_fill = gt_color_interpolate(color_gradient("white", "steelblue"), df, filter_fun = identity, legend_title = "Value"))
+
+```
+
+Confidence histogram - how is confidence distributed?
+```{r}
+plot_data <- data
+plot_data$accuracy[plot_data$accuracy == 1] <- "Correct"
+plot_data$accuracy[plot_data$accuracy == 0] <- "Incorrect"
+
+confidence_distribution <- ggplot(plot_data, aes(x = as.character(confidence), fill = as.factor(accuracy))) +
+  geom_bar(position="stack", width=0.8) +
+  scale_fill_manual(values=c("#D3D3D3", "#808080")) +
+  labs(x = "Confidence",
+       y = "Count") +
+  scale_y_continuous(limits = c(0, 600), breaks = c(0, 100, 200, 300, 400, 500, 600)) + 
+  guides(fill=guide_legend(title="Classification\nAccuracy")) +
+  theme(text = element_text(family = "Times New Roman"),
+        plot.margin = margin(0.50,0.50,0.75,0.75, "cm"),
+        axis.title.x = element_text(vjust = 0, size = 22),
+        axis.title.y = element_text(vjust = 3, size = 22),
+        axis.title = element_text(size = 20, face = "bold"),
+        axis.line = element_line(), 
+        axis.ticks = element_line(size = 1),
+        axis.ticks.length=unit(.25, "cm"),
+        legend.title = element_text(size = 20, face = "bold"),
+        legend.text = element_text(size = 20, face = "bold"),
+        legend.position = c(0.90, 0.95),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20),
+        panel.background = element_blank())
+
+confidence_distribution
+#ggsave(confidence_distribution, filename = "./figures/confidence_distribution.png", dpi = 600, type = "cairo", width = 10, height = 10, units = "in")
+```
+
+What errors were marked?
+```{r}
+data$error <- ifelse(data$language_errors == 1 & data$factual_errors == 1, "Both",
+                     ifelse(data$language_errors == 1 & data$factual_errors == 2, "Language", 
+                            ifelse(data$language_errors == 2 & data$factual_errors == 1, "Factual", "None")))
+
+plot_data <- data
+plot_data$hm_answer[plot_data$hm_answer == 2] <- "Synthetic"
+plot_data$hm_answer[plot_data$hm_answer == 1] <- "Real"
+  
+error_types <- ggplot(plot_data, aes(x = error, group = hm_answer, fill = hm_answer)) + 
+  geom_bar(aes(fill = hm_answer), width = 0.8) +
+  labs(x = "Marked Error Type",
+       y = "Count") +
+  scale_fill_manual(values=c("#D3D3D3", "#808080")) +
+  scale_y_continuous(breaks = c(0, 100, 200, 300, 400, 500, 600, 700)) + 
+  guides(fill=guide_legend(title="Participant\nClassification")) +
+  facet_wrap(.~hm_correct, labeller = labeller(hm_correct = c("1" = "Real Articles", "2" = "Synthetic Articles"))) +
+  theme_bw() +
+  theme(text = element_text(family = "Times New Roman"),
+        plot.margin = margin(0.25,0.25,0.5,0.5, "cm"),
+        axis.title.x = element_text(vjust = -0.5),
+        axis.title.y = element_text(vjust = 3),
+        axis.title = element_text(size = 25, face = "bold"),
+        axis.line = element_line(), 
+        axis.ticks = element_line(size = 1),
+        legend.title = element_text(size = 22, face = "bold"),
+        legend.text = element_text(size = 22, face="bold"),
+        legend.position = "right",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 20, angle=45, hjust=1),
+        axis.text.y = element_text(size = 20),
+        strip.background = element_rect(fill = "white"),
+        strip.text = element_text(size = 25, face = "bold"))
+
+error_types
+
+#ggsave(error_types, filename = "./figures/error_types.png", dpi = 600, type = "cairo", width = 12, height = 10, units = "in")
+```
+
+
+# Statistical Evaluations
+## Model to see if domain expertise enhances performance
+```{r}
+# change how_often_do_you_read_news so that we get a baseline which is never instead of often
+data_models <- data
+
+data_models$news_consumption <- ifelse(data_models$how_often_do_you_read_news == 1, 5, ifelse(
+  data_models$how_often_do_you_read_news == 2, 4, ifelse(
+    data_models$how_often_do_you_read_news == 4, 2, ifelse(
+      data_models$how_often_do_you_read_news == 5, 1, 3))))
+
+# run model
+m1 <- lme4::glmer(accuracy ~ as.factor(news_consumption) + as.factor(gpt3_knowledge) + (1|article), family = binomial, data=data_models)
+
+summary(m1)
+```
+
+
+## For comparison with classifiers from Experiment B
+```{r}
+# make 2s into 0s
+average_answers <- data
+average_answers$hm_answer[average_answers$hm_answer == 2] <- 0
+average_answers$hm_correct[average_answers$hm_correct == 2] <- 0
+
+average_answers <- average_answers %>% 
+  group_by(article) %>% 
+  summarize("human_probability" = mean(hm_answer),
+            "true_label" = mean(hm_correct))
+
+average_answers$prediction_human <- ifelse(average_answers$human_probability < 0.5, 0, 1)
+average_answers$human_probability <- ifelse(average_answers$prediction_human == 0, 1-average_answers$human_probability, average_answers$human_probability)
+
+write_csv(average_answers, "human_predictions.csv")
+```
