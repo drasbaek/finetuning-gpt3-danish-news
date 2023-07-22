@@ -1,0 +1,66 @@
+---
+title: "Evaluating GPT-3 fine-tune"
+author: "Anton Drasbæk & Mina Almasi"
+date: "10/7/2022"
+output: html_document
+---
+# Description
+This file covers how we evaluated our GPT-3 fine-tune. It includes the plot of the training loss.
+
+# Load Packages and Data
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(tidyverse, ggthemes)
+```
+
+import data
+```{r}
+data <- read_csv("~/Desktop/dknews-GPT3/data/data-for-finetune-GPT3/finetune_results/results_samf2_final_model.csv")
+data["model"] <- "samf2"
+```
+
+# Plotting
+Training loss
+```{r}
+training_loss_plot <- ggplot(data, aes(x = elapsed_examples, y = training_loss)) +
+  labs(title = "Training Loss for GPT-3 Fine-Tuning", y = "TRAINING LOSS", x="ELAPSED EXAMPLES") +
+  guides(color="none")+
+  geom_vline(xintercept = 1209, alpha = 1, color = "darkgrey", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*2, alpha = 1, color = "darkgrey", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*3, alpha = 1, color = "darkgrey", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*4, alpha = 1, color = "darkgrey", size = 1, linetype = "dashed") +
+  scale_y_continuous(breaks = c(0.5, 0.6, 0.7, 0.8, 0.9, 1.0))+
+  geom_smooth(color = "#1fc7ad", size = 2) +
+  theme(text = element_text(family = "Libre Franklin"),
+        plot.title = element_text(hjust = 0.5, size = 18, face = "bold"), 
+        axis.title.x = element_text(color = "darkgrey"), 
+        axis.title.y = element_text(color = "darkgrey"), 
+        panel.background = element_blank(), 
+        axis.line = element_line(color = "darkgrey"),
+        axis.ticks = element_line(color = "darkgrey")
+        ) 
+
+training_loss_plot
+```
+
+
+```{r}
+ggsave(training_loss_plot, filename = "/Users/minaalmasi/Desktop/dknews-GPT3/figures/training_loss_finetuning_GPT3.png", dpi = 300, type = "cairo", width = 7, height = 5, units = "in")
+```
+
+Training accuracy
+```{r}
+training_acc_plot <- ggplot(data, aes(x = elapsed_examples, y = training_token_accuracy)) +
+  geom_smooth(color = "#E14D50", size = 2) +
+  labs(title = "Training Accuracy for GPT-3 Fine-Tuning", y = expression(paste(bold("Training Token Accuracy"))), x=(expression(paste(bold("Elapsed Examples"))))) +
+  guides(color="none")+
+  geom_vline(xintercept = 1209, alpha = 1, color = "black", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*2, alpha = 1, color = "black", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*3, alpha = 1, color = "black", size = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1209*4, alpha = 1, color = "black", size = 1, linetype = "dashed") + 
+  theme_few(base_family = "Times New Roman", base_size = 16)+ 
+  theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))
+
+training_acc_plot
+```
+
