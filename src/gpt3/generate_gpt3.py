@@ -20,10 +20,10 @@ def prepare_data(data_path):
     # read data
     data = pd.read_csv(data_path)
 
-    # create prompt column (according to OPENAI recs)
+    # create prompt column (according to OPENAI recs) and preprocess it
     data["prompt"] = data["headers"].astype(str) +". "+ data["sub_header"] +" ->"
 
-    return data 
+    return data
 
 def generate_text_from_prompt(finetune_mdl, prompt):
     '''
@@ -65,16 +65,17 @@ def generate_text_from_data(finetune_mdl, data):
         data: original dataframe with a new "completions" column
 
     '''
-    completion_lst = []
+    completions = []
 
     for prompt in data["prompt"]:
         completion = generate_text_from_prompt(finetune_mdl, prompt)
-        completion_lst.append(completion)
+        completions.append(completion)
 
-    # Add the completions list as a new column "completions" in the original dataframe
-    data["completions"] = completion_lst
+    # Create a new DataFrame with the completions column
+    completions_data = data.copy()
+    completions_data["completions"] = completions
 
-    return data
+    return completions_data
 
 def main(): 
     # define paths 
@@ -103,6 +104,7 @@ def main():
 
     # print 
     print(completions_data)
+    
 
 if __name__ == "__main__":
     main()
