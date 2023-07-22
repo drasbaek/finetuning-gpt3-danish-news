@@ -164,3 +164,12 @@ tokens/*.txt
 
 ## TEMP 
 data
+
+# R 
+.Rproj.user
+.Rhistory
+*.Rproj
+
+# MAC
+.DS_Store
+
