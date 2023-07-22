@@ -11,7 +11,6 @@ Read more on: https://openai.com/blog/gpt-4-api-general-availability
 # utils 
 import pathlib
 import json 
-import re
 
 # gpt3 finetuning
 import openai 
@@ -100,6 +99,32 @@ def create_finetune(training_file_id, target_finetune, n_epochs, model):
     
     return finetune_id
     
+def get_results(finetune_id, out_path): 
+    '''
+    Retrieve results of fine-tuning (loss and accuracy)  
+
+    Args
+        finetune_id: id of the fine-tune 
+        out_path: path where the results should be saved
+    '''
+
+    # retrieve finetune 
+    finetune = openai.FineTune.retrieve(finetune_id)
+
+    # get finetune results 
+    result_files = finetune.get("result_files", [])  # get the list of result_files, or an empty list if it's not available
+
+    if result_files:
+        first_result_file = result_files[0]  # assuming there is only one result file in the list
+        file_id = first_result_file.get("id", None)  # get the ID of the file
+
+    # download file, decode 
+    content = openai.File.download(file_id)
+    content_decoded = content.decode()
+
+    # write
+    with open(out_path, 'w') as f:
+        f.write(content_decoded)
 
 def main(): 
     # define paths 
@@ -119,12 +144,11 @@ def main():
     # create finetune, if finetune with the specific suffix does not exist
     finetune_id, finetune_mdl = create_finetune(file_id, "finetune-dummy", 2, "davinci")
 
-    # retrieve exact finetune 
-    finetune = openai.FineTune.retrieve(finetune_id)
+    # print mdl name
+    print(finetune_mdl)
 
-    # print 
-    print(finetune)
-
+    # get results
+    get_results(finetune_id, path.parents[2] / "results" / "gpt3-ft-loss-dummy.csv")
 
 if __name__ == "__main__":
     main()
