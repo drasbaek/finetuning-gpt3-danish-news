@@ -6,3 +6,4 @@ transformers==4.24.0
 torch==1.12.1
 datasets==2.7.0
 tokenizers==0.13.2 
+nltk==3.7

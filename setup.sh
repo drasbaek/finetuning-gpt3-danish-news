@@ -11,6 +11,9 @@ echo -e "[INFO:] Installing necessary requirements..."
 # install reqs
 python3 -m pip install -r requirements.txt
 
+# install nltk "popular" library
+python -m nltk.downloader popular 
+
 # deactivate env 
 deactivate
 
