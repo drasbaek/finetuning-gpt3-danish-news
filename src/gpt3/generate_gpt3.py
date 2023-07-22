@@ -16,7 +16,17 @@ import openai
 # custom functions 
 from modules.gpt3_helpers import import_token, find_existing_finetune_id
 
-def prepare_data(data_path):
+def prepare_data(data_path:pathlib.Path):
+    '''
+    Load and prepare dataframe consisting of "headers" and "sub_header" column for text generation. 
+
+    Args
+        data_path: path to data
+    
+    Returns
+        data: original dataframe but with a "prompt" column for text generation
+    '''
+
     # read data
     data = pd.read_csv(data_path)
 
@@ -71,7 +81,7 @@ def generate_text_from_data(finetune_mdl, data):
         completion = generate_text_from_prompt(finetune_mdl, prompt)
         completions.append(completion)
 
-    # Create a new DataFrame with the completions column
+    # create a new df with the completions column
     completions_data = data.copy()
     completions_data["completions"] = completions
 
