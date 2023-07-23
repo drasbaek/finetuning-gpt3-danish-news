@@ -12,7 +12,7 @@ import pandas as pd
 def main():
     # define paths 
     path = pathlib.Path(__file__) 
-    path_data = path.parents[2] / "dummy_data" / "dummy_scraped.csv"
+    path_data = path.parents[2] / "dummy_data" / "dummy_scraped_data.csv"
 
     # read data 
     data = pd.read_csv(path_data)
@@ -24,5 +24,5 @@ def main():
     data["short_text"] = shorten_all_articles(data["tekst"])
 
     # convert into jsonl for gpt-3 finetune 
-    path_out = path.parents[2] / "dummy_jsonl" / "scraped_articles_for_finetune.jsonl"
-    jsonl_article_data(samf_data, "headers", "sub_header", "short_text", path_out)
+    path_out = path.parents[2] / "dummy_data" / "finetune_gpt3_dummy.jsonl"
+    jsonl_article_data(data, "headers", "sub_header", "short_text", path_out)
