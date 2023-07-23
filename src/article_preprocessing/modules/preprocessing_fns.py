@@ -53,3 +53,33 @@ def shorten_all_articles(text_column:pd.Series)-> list:
     for article in text_column:
         short_articles.append(shorten_article(article))
     return short_articles
+
+def jsonl_article_data(data, header_col, sub_header_col, short_text_col, outpath):
+    ''' 
+    Function to create a jsonl file with the following structure:
+    prompt: <header> <subheader>
+    completion: <short_text>
+
+    Parameters:
+    data (pandas dataframe): dataframe with the data
+    header_col (str): name of the column with the header
+    sub_header_col (str): name of the column with the subheader
+    short_text_col (str): name of the column with the shortened text
+    outpath (pathlib.Path): full path of outfile 
+    '''
+
+    # create prompt column
+    data["prompt"] = data[header_col].astype(str) +". "+ data[sub_header_col]
+
+    # rename short_text to completion
+    data = data.rename(columns={short_text_col: "completion"})
+
+    # rearrange columns for jsonl format
+    data = data[["prompt", "completion"]]
+
+
+    # prepare for jsonl fine-tuning (prompts ending with "->" and completitons starting with white space " " & ending with "\n")
+    data["prompt"] = data["prompt"].astype(str) + " ->"
+    data["completion"] = " "+ data["completion"].astype(str) + " \n"
+
+    short_json = data.to_json(outpath, orient='records', lines=True, force_ascii=False) #needs force_ascii=False to keep danish characters
