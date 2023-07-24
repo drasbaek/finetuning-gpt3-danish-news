@@ -23,7 +23,8 @@ pacman::p_load(httr, tidyverse, cvms, lme4)
 
 ## Load data
 ```{r}
-data <- read_csv("/Users/antondrasbaek/Desktop/exp-A-dummy-data.csv")
+# data located in dummy_data folder from root directory
+data <- read_csv("dummy_data/exp-A-dummy-data.csv")
 ```
 
 # Basic insights
@@ -145,7 +146,8 @@ confidence_distribution <- ggplot(plot_data, aes(x = as.character(confidence), f
         panel.background = element_blank())
 
 confidence_distribution
-#ggsave(confidence_distribution, filename = "./figures/confidence_distribution.png", dpi = 600, type = "cairo", width = 10, height = 10, units = "in")
+
+ggsave(confidence_distribution, filename = "./plots/confidence_distribution.png", dpi = 600, type = "cairo", width = 10, height = 10, units = "in")
 ```
 
 What errors were marked?
@@ -186,7 +188,7 @@ error_types <- ggplot(plot_data, aes(x = error, group = hm_answer, fill = hm_ans
 
 error_types
 
-#ggsave(error_types, filename = "./figures/error_types.png", dpi = 600, type = "cairo", width = 12, height = 10, units = "in")
+ggsave(error_types, filename = "./plots/error_types.png", dpi = 600, type = "cairo", width = 12, height = 10, units = "in")
 ```
 
 
