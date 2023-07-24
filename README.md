@@ -10,7 +10,7 @@ The repository is structured as such:
 
 | <div style="width:120px"></div>| Description |
 |---------|:-----------|
-| ```dummy_data``` | Dummy data to run GPT-3 fine-tuning pipeline, reproduce plots from `experiment A`` (human participants) and reproduce technical pipelines from ?`experiment B`` (machine classifiers)|
+| ```dummy_data``` | Dummy data to run GPT-3 fine-tuning pipeline, reproduce plots from `experiment A` (human participants) and reproduce technical pipelines from `experiment B` (machine classifiers)|
 | ```data``` | ... |
 | ```plots``` | Plots used in paper|
 | ```results``` | Results from machine classifiers |
