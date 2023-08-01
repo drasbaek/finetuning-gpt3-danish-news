@@ -162,8 +162,8 @@ cython_debug/
 ## tokens 
 tokens/*.txt
 
-## TEMP 
-data
+# avoid pushing copyright data
+actual_data
 
 # R 
 .Rproj.user
