@@ -14,40 +14,13 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
-# evaluate classifier 
-from sklearn import metrics
-
 # plot confusion matrix 
 import matplotlib.pyplot as plt
 
+# custom modules for loading data, evaluating LR 
+from modules.simple_fns import prepare_data, evaluate_LR
+
 # functions 
-def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
-    '''
-    Prepare data for TF-IDF or BOW classifier
-
-    Args
-        train_path: path to train data
-        test_path: path to test data 
-
-    Returns: 
-        train_data, test_data: preprocessed pandas dataframes
-    '''
-    
-    # read in data
-    train_data = pd.read_csv(train_path)
-    test_data = pd.read_csv(test_path)
-
-    # remove punctuations 
-    train_data["text"] = train_data["text"].str.replace(r'[^\w\s]+', '', regex=True)
-    test_data["text"] = test_data["text"].str.replace(r'[^\w\s]+', '', regex=True)
-    
-    # make lower case 
-    train_data["text"] = train_data["text"].str.lower()
-    test_data["text"] = test_data["text"].str.lower()
-
-    return train_data, test_data
-    
-
 def TFIDF_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
     '''
     Vectorise clean data using a TF-IDF vectorizer
@@ -74,37 +47,6 @@ def TFIDF_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
     Y_test = test_data["label"].values 
 
     return X_train, X_test, Y_train, Y_test
-
-def evaluate_LR(lr_model, X_test, Y_test):
-    '''
-    Evaluate a fitted logistic regression, extracting accuracy, f1, precision, recall
-
-    Args
-        lr_model: logistic regression model 
-        X_test: test data 
-        Y_test: true labels for test data 
-
-    Returns 
-        metrics_dict: dictionary of metrics (accuracy, F1, precision, recall)
-    '''
-
-    # extract predictions
-    Y_predict = lr_model.predict(X_test)
-
-    # calculate metrics 
-    accuracy = metrics.accuracy_score(Y_test, Y_predict)
-    f1_score = metrics.f1_score(Y_test, Y_predict)
-    precision = metrics.precision_score(Y_test, Y_predict)
-    recall = metrics.recall_score(Y_test, Y_predict)
-
-    # make into dictionary 
-    metrics_dict = {"Accuracy": round(accuracy, 3),
-                "F1": round(f1_score, 3),
-                "Precision": round(precision, 3),
-                "Recall": round(recall, 3)
-                } 
-
-    return metrics_dict 
     
 def main(): 
     # define paths
