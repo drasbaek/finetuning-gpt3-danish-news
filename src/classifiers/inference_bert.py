@@ -67,7 +67,7 @@ def main():
     classify_data = classify(classifier, data, "text")
 
     # save data
-    classify_data.to_csv(path.parents[2] / "results" / "bert_predictions.csv")
+    classify_data.to_csv(path.parents[2] / "dummy_results" / "bert_predictions.csv")
 
     # print statement
     print("[INFO:] Classification completed!")
