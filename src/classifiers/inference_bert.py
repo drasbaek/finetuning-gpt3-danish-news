@@ -1,3 +1,11 @@
+'''
+Script for running inference on REAL test data with the fine-tuned BERT model. 
+
+!NOTE! While all other scripts run on dummy-data with dummy models, this script runs inference with the ACTUAL fine-tuned model on the ACTUAL test data. 
+
+Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023).
+'''
+
 # utils
 import pathlib
 from tqdm import tqdm
