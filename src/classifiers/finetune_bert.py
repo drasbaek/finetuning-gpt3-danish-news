@@ -100,8 +100,5 @@ def main():
     train_loss, val_loss, total_epochs = get_loss(trainer.state.log_history)
     plot_loss(train_loss, val_loss, total_epochs, resultspath, f"{args.model}_loss_curve.png")
 
-    # evaluate, save summary metrics 
-    get_metrics(trainer,  tokenized_data["test"], ds["test"], id2label, resultspath, f"{args.model}_all")
-
 if __name__ == "__main__":
     main()
