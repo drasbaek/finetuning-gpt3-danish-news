@@ -50,9 +50,15 @@ To run the analysis, please refer to the Rmarkdown `exp-a-analysis.Rmd` in the `
 ### [4] Experiment B: Constructing Machine Classifiers
 To construct the machine classifiers (`BOW`, `TF-IDF`, `fine-tuned BERT`), follow the instructions in the [README.md](src/classifiers/README.md) located in `src/classifiers`.
 
-⚠️ `NOTE!` While the fine-tuning of [NbAiLab/nb-bert-large](https://huggingface.co/NbAiLab/nb-bert-large) is done on dummy data, the inference is done with the actual fine-tuned classifier on the real test_data.
+> ⚠️ `NOTE!` While the fine-tuning of [NbAiLab/nb-bert-large](https://huggingface.co/NbAiLab/nb-bert-large) is done on dummy data, the inference is done with the actual fine-tuned classifier on the real test_data.
 
-The fine-tuned `BERT` can be accessed from the Hugging Face Hub: [MinaAlmasi/dknews-NB-BERT-AI-classifier](https://huggingface.co/MinaAlmasi/dknews-NB-BERT-AI-classifier).
+<br>
+
+The fine-tuned `BERT` can be accessed from the Hugging Face Hub: 
+<p align="center">
+  <a href="https://huggingface.co/MinaAlmasi/dknews-NB-BERT-AI-classifier">MinaAlmasi/dknews-NB-BERT-AI-classifier</a>
+</p>
+
 
 ## Authors 
 For any questions regarding the paper or reproducibility of the project, you can contact us:
