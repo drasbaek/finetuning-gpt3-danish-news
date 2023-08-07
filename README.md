@@ -20,7 +20,7 @@ The repository is structured as such:
 | ```plots``` | Plots used in paper|
 | ```results``` | ACTUAL Results from machine classifiers |
 | ```src``` | All code organised in folders `article-preprocessing`, `gpt3` and `classifiers` |
-| ```tokens``` | Empty folder to place `openai-token.txt` and `huggingface-token.txt`|
+| ```tokens``` | Empty folder to place `openai_token.txt` (for fine-tuning and generating text with GPT-3) and `hf_token.txt` (for pushing model to Hub, OPTIONAL!!!) |
 | ```setup.sh``` | Run to install necessary requirements, packages in virtual environment|
 | ```simple_classifier.sh``` | Run to reproduce classifier pipelines|
 | ```bert_classifier.sh``` | Run to reproduce BERT pipeline|
