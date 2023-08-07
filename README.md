@@ -30,22 +30,27 @@ Please note again that `results`, `plots` and `data` contains actual data pertai
 ## Pipeline 
 For this project, Python (version 3.10) and R was used. Python's [venv](https://docs.python.org/3/library/venv.html) needs to be installed for the setup to work.
 
-### Setup 
+### General setup 
 To install necessary requirements in a virtual environment (`env`), please run the `setup.sh` in the terminal: 
 ```
 bash setup.sh
 ```
 
-### [0] Article Preprocessing
-To reproduce the article preprocessing on dummy data, follow the instructions in ___ 
+Note that the individual technical pipelines may require extra setup. These steps are explained in their respective `README's`. 
 
-### [1] Fine-Tuning and Text Generation with GPT-3
-To fine-tune and/or generate text with GPT-3, follow the instructions in the [README.md](https://github.com/drasbaek/finetuning-gpt3-danish-news/blob/main/src/gpt3/README.md) located in `src/gpt3`. 
+### Technical Pipelines
+Four pipelines were applied in (Almasi & Schiønning, 2023): 
 
-### [2] Experiment A: Analysis of Human Participants  
-To run the analysis, please refer to the Rmarkdown `exp-a-analysis.Rmd` in the src folder. 
+#### [1] Article Preprocessing
+Refer to [README.md]() located in `src/process_articles` to reproduce the article preprocessing. 
 
-### [3] Experiment B: Constructing Machine Classifiers
+#### [2] Fine-Tuning and Text Generation with GPT-3
+To fine-tune and/or generate text with GPT-3, refer to the [README.md](https://github.com/drasbaek/finetuning-gpt3-danish-news/blob/main/src/gpt3/README.md) located in `src/gpt3`. 
+
+#### [3] Experiment A: Analysis of Human Participants  
+To run the analysis, please refer to the Rmarkdown `exp-a-analysis.Rmd` in the `src` folder. 
+
+#### [4] Experiment B: Constructing Machine Classifiers
 To construct the machine classifiers (`BOW`, `TF-IDF`, `fine-tuned BERT`), follow the instructions in the [README.md](https://github.com/drasbaek/finetuning-gpt3-danish-news/blob/main/src/classifiers/README.md) located in `src/classifiers`.
 
 ⚠️ `NOTE!` While the fine-tuning of [NbAiLab/nb-bert-large](https://huggingface.co/NbAiLab/nb-bert-large) is done on dummy data, the inference is done with the `actual` fine-tuned classifier on the real `test_data`.
