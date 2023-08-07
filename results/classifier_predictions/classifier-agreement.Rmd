@@ -1,0 +1,48 @@
+---
+title: "Cohen's Kappa for evaluating classifier agreement using ACTUAL results (not dummy results)"
+author: "Anton Drasbæk Schiønning and Mina Almasi"
+date: "12/20/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r}
+library(tidyverse)
+library(irr)
+```
+
+
+Load data
+```{r}
+classifications <- read_csv(file.path("results", "classifier_predictions", "all_classifier_predictions.csv"))
+classifications <- classifications %>% 
+  select("prediction_human", "prediction_bow", "prediction_tfid", "prediction_bert")
+```
+
+```{r}
+tfid_bow <- classifications %>% 
+  select("prediction_bow", "prediction_tfid")
+
+kappa2(tfid_bow) # almost agree completely
+```
+
+
+```{r}
+tfid_bert <- classifications %>% 
+  select("prediction_tfid", "prediction_bert")
+
+kappa2(tfid_bert) # substantial agreement
+```
+
+```{r}
+bow_bert <- classifications %>% 
+  select("prediction_bow", "prediction_bert")
+
+kappa2(bow_bert) # substantial agreement
+
+```
+
