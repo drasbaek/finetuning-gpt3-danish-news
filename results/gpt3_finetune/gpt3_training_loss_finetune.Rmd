@@ -1,6 +1,6 @@
 ---
-title: "Evaluating GPT-3 fine-tune"
-author: "Anton Drasbæk & Mina Almasi"
+title: "Evaluating GPT-3 fine-tune using ACTUAL results (not dummy results)"
+author: "Anton Drasbæk Schiønning and Mina Almasi"
 date: "10/7/2022"
 output: html_document
 ---
@@ -15,7 +15,7 @@ pacman::p_load(tidyverse, ggthemes)
 
 import data
 ```{r}
-data <- read_csv(file.path("results", "gpt3_finetune_results.csv"))
+data <- read_csv(file.path("results", "gpt3_finetune", "gpt3_finetune_results.csv"))
 data["model"] <- "samf2" # arbitrary name 
 ```
 
