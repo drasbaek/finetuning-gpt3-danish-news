@@ -30,7 +30,7 @@ def main():
     data_2["short_text"] = shorten_all_articles(data_2["tekst"])
 
     # convert into jsonl for gpt-3 finetune 
-    path_out_1 = path.parents[2] / "dummy_data" / "finetune_gpt3_dummy.jsonl"
+    path_out_1 = path.parents[2] / "dummy_data" / "gpt3_data" / "finetune_gpt3_dummy.jsonl"
     jsonl_article_data(data_1, "headers", "sub_header", "short_text", path_out_1)
 
     # write to csv for classifier 
