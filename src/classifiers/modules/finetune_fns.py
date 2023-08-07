@@ -22,31 +22,23 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from sklearn.metrics import classification_report
 import torch 
 
-def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
+def prepare_data(train_path:pathlib.Path):
     '''
-    Prepare data for BERT classifier  
+    Prepare training data for BERT classifier  
 
     Args
         train_path: path to train data
-        test_path: path to test data 
 
     Returns: 
-        dataset: HF dataset dictionary containing train, eval and test ds 
+        dataset: HF dataset dictionary containing train and eval ds
     '''
     
     # read in data
     data = pd.read_csv(train_path)
-    test_data = pd.read_csv(test_path)
-
-    # select only relevant columns 
-    test_data = test_data[["text", "label"]]
-
+    
     # ensure that data is in the right format 
     data['text'] = data['text'].astype(str)
-    test_data['text'] = test_data['text'].astype(str)
-
     data['label'] = data['label'].astype(int)
-    test_data['label'] = test_data['label'].astype(int)
 
     # split "data" into train_data and eval_data 
     train_data, eval_data = train_test_split(data)
@@ -54,10 +46,9 @@ def prepare_data(train_path:pathlib.Path, test_path:pathlib.Path):
     # convert pandas dataframes into huggingface datasets
     train_ds = Dataset.from_pandas(train_data, preserve_index = False) # removing past indices with preserve_index = False
     eval_ds = Dataset.from_pandas(eval_data, preserve_index = False)
-    test_ds = Dataset.from_pandas(test_data, preserve_index = False)
 
-    # combine all three datasets into one dataset dict 
-    dataset = DatasetDict({"train":train_ds,"eval":eval_ds, "test":test_ds})
+    # combine all two datasets into one dataset dict 
+    dataset = DatasetDict({"train":train_ds,"eval":eval_ds})
 
     return dataset 
 

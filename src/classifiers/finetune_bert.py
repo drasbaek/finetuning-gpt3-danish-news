@@ -14,7 +14,7 @@ import argparse
 from transformers import TrainingArguments 
 
 # custom modules
-from modules.finetune_fns import finetune, get_loss, plot_loss, get_metrics, prepare_data
+from modules.finetune_fns import finetune, get_loss, plot_loss, prepare_data
 
 # save log history
 import pickle
@@ -38,14 +38,14 @@ def main():
 
     # define paths (for saving model and loss curve)
     path = pathlib.Path(__file__)
-    output_folder = path.parents[2] / "model"
+    output_folder = path.parents[4] / "model"
     resultspath = path.parents[2] / "results"
 
     # import data
     path_train = path.parents[2] / "dummy_data" / "classifier_data" /  "dummy_train_data_classifier.csv"
 
     # prepare data 
-    ds = prepare_data(path_train, path_test)
+    ds = prepare_data(path_train)
 
     # define model 
     model_name = "NbAiLab/nb-bert-large"
@@ -55,7 +55,7 @@ def main():
         from huggingface_hub import login
 
         # get token from txt
-        with open(path.parents[1] / "token.txt") as f:
+        with open(path.parents[2] / "tokens" / "hf_token.txt") as f:
             hf_token = f.read()
 
         login(hf_token)
@@ -65,7 +65,7 @@ def main():
 
     # define training arguments 
     training_args = TrainingArguments(
-        output_dir = output_folder,  
+        output_dir = output_folder / "dummy_model",  
         push_to_hub = args.push_to_hub, # only if flag is specified 
         learning_rate=2e-5,
         per_device_train_batch_size = batch_size, 
@@ -93,12 +93,12 @@ def main():
         trainer.push_to_hub()
 
     # save log history with pickle
-    with open (resultspath / f"{args.model}_log_history.pkl", "wb") as file:
+    with open (resultspath / "dummy_model_log_history.pkl", "wb") as file:
         pickle.dump(trainer.state.log_history, file)
 
     # compute train and val loss, plot loss
     train_loss, val_loss, total_epochs = get_loss(trainer.state.log_history)
-    plot_loss(train_loss, val_loss, total_epochs, resultspath, f"{args.model}_loss_curve.png")
+    plot_loss(train_loss, val_loss, total_epochs, resultspath, f"dummy_model_loss_curve.png")
 
 if __name__ == "__main__":
     main()
