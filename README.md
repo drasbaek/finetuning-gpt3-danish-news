@@ -1,12 +1,12 @@
 # Fine-tuning GPT-3 for Synthetic Danish News Generation
 This repository contains the code written for the paper titled, **"Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023)**. 
 
-The project involves fine-tuning GPT-3 to produce synthetic news articles in Danish and evaluating the model in binary classification tasks. The evaluation relied on both human participants (A) and machine classifiers (B).
+The project involved fine-tuning GPT-3 to produce synthetic news articles in Danish and evaluating the model in binary classification tasks. The evaluation relied on both human participants (A) and machine classifiers (B).
 
-To read the details of this evaluation, please refer to our paper. 
+To read the details of this evaluation, please refer to (Almasi & Schiønning, 2023). 
 
 ## Reproducibility  
-Due to constraints with copyright and GDPR, only the test data and the synthetically generated GPT-3 data is uploaded to the GitHub. For all other purposes, `dummy` data is provided to reproduce the pipeliens (see also `Project Structure`). To run any of the pipelines, follow the instructions in the `Pipeline` section. 
+Due to constraints with copyright and GDPR, only the test data and the synthetically generated GPT-3 data is uploaded to this GitHub repository. For all other purposes, `dummy` data is provided to reproduce the pipelines (see also `Project Structure`). To run any of the pipelines, follow the instructions in the `Pipeline` section. 
 
 For any other questions regarding the project, please [contact](https://github.com/drasbaek/finetuning-gpt3-danish-news/tree/main#authors) the authors. 
 
@@ -26,7 +26,6 @@ The repository is structured as such:
 | ```bert_classifier.sh``` | Run to reproduce BERT pipeline|
 
 Please note again that `results`, `plots` and `data` contains actual data pertaining to (Almasi & Schiønning, 2023) while `dummy_results` and `dummy_data` are not real data files. 
-
 
 ## Pipeline 
 For this project, Python (version 3.10) and R was used. Python's [venv](https://docs.python.org/3/library/venv.html) needs to be installed for the setup to work.
