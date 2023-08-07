@@ -135,7 +135,7 @@ def main():
     import_token(path_token)
 
     # define filename, filepath 
-    path_dummydata = path.parents[2] / "dummy_data" / "finetune_gpt3_dummy.jsonl" 
+    path_dummydata = path.parents[2] / "dummy_data" / "gpt3_data" / "finetune_gpt3_dummy.jsonl" 
     target_filename = "finetune_gpt3_dummy.jsonl"
 
     # create file, if file does not exist already 

@@ -91,7 +91,7 @@ def main():
     # define paths 
     path = pathlib.Path(__file__) 
     path_token = path.parents[2] / "tokens" / "openai_token.txt"
-    path_data = path.parents[2] / "dummy_data" / "generate_gpt3_dummy_prompts.csv"
+    path_data = path.parents[2] / "dummy_data" / "gpt3_data" / "generate_gpt3_dummy_prompts.csv"
 
     # setup token
     import_token(path_token)
