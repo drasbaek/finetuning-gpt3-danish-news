@@ -38,8 +38,8 @@ def main():
 
     # define paths (for saving model and loss curve)
     path = pathlib.Path(__file__)
-    output_folder = path.parents[4] / "model"
-    resultspath = path.parents[2] / "results"
+    output_folder = path.parents[4] / "model" # note that this is outside the repo
+    resultspath = path.parents[2] / "dummy_results" / "bert_finetune"
 
     # import data
     path_train = path.parents[2] / "dummy_data" / "classifier_data" /  "dummy_train_data_classifier.csv"

@@ -18,9 +18,9 @@ from transformers import (AutoTokenizer, AutoModelForSequenceClassification,
 # for compute_metrics function used during training
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 
-# for evaluation, getting predictions
-from sklearn.metrics import classification_report
-import torch 
+# for plotting loss
+import matplotlib.pyplot as plt
+import numpy as np
 
 def prepare_data(train_path:pathlib.Path):
     '''
@@ -35,7 +35,7 @@ def prepare_data(train_path:pathlib.Path):
     
     # read in data
     data = pd.read_csv(train_path)
-    
+
     # ensure that data is in the right format 
     data['text'] = data['text'].astype(str)
     data['label'] = data['label'].astype(int)
