@@ -34,7 +34,7 @@ def main():
     jsonl_article_data(data_1, "headers", "sub_header", "short_text", path_out_1)
 
     # write to csv for classifier 
-    path_out_2 = path.parents[2] / "dummy_data" / "scraped_data" / "scraped_shortened_articles.csv" 
+    path_out_2 = path.parents[2] / "dummy_data" / "scraped_data" / "dummy_scraped_shortened_articles.csv" 
     data_2.to_csv(path_out_2, index=False)
     
 if __name__ == "__main__":
