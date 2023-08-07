@@ -47,7 +47,7 @@ def BOW_vectorize(train_data:pd.DataFrame, test_data:pd.DataFrame):
 def main(): 
     # define paths
     path = pathlib.Path(__file__) 
-    path_train = path.parents[2] / "dummy_data" / "dummy_train_data_classifier.csv"
+    path_train = path.parents[2] / "dummy_data" / "classifier_data" /  "dummy_train_data_classifier.csv"
     path_test =  path.parents[2] / "data" / "test_data_classifier.csv"
 
     path_save = path.parents[2] / "dummy_results"
