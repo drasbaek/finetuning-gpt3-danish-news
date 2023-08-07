@@ -42,9 +42,9 @@ def main():
     resultspath = path.parents[2] / "results"
 
     # import data
-    path_train = path.parents[2] / "dummy_data" / "dummy_train_data_classifier.csv"
-    path_test =  path.parents[2] / "data" / "test_data_classifier.csv"
+    path_train = path.parents[2] / "dummy_data" / "classifier_data" /  "dummy_train_data_classifier.csv"
 
+    # prepare data 
     ds = prepare_data(path_train, path_test)
 
     # define model 
