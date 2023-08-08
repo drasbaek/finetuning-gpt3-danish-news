@@ -10,7 +10,7 @@ Due to constraints with copyright and GDPR, only the test data and the synthetic
 
 For any other questions regarding the project, please [contact](https://github.com/drasbaek/finetuning-gpt3-danish-news/tree/main#authors) the authors. 
 
-## Pronect Structure 
+## Project Structure 
 The repository is structured as such: 
 
 | <div style="width:120px"></div>| Description |
