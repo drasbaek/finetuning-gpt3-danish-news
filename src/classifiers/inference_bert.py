@@ -61,10 +61,11 @@ def main():
     path = pathlib.Path(__file__)
     datapath = path.parents[2] / "data"
 
-    # load data (only loading the relevant columns)
+    # load data
     data = pd.read_csv(datapath / "test_data_classifier.csv")
 
     # initialize pipeline
+    print("Initalizing pipeline")
     classifier = pipeline("text-classification", 
                       model="MinaAlmasi/dknews-NB-BERT-AI-classifier", 
                       return_all_scores=True,
@@ -72,6 +73,7 @@ def main():
                       )
 
     # do classification
+    print("Performing inference")
     classify_data = classify(classifier, data, "text")
 
     # save data
