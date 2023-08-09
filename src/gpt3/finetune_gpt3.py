@@ -4,7 +4,7 @@ Script for fine-tuning GPT-3 for generating Danish news articles
 
 Written for the paper titled "Fine-tuning GPT-3 for Synthetic Danish News Generation" (Almasi & Schiønning, 2023).
 
-NB! Please note that the current script finetunes "text-davinci-002", but that this will be deprecated on the 4th of January 2024
+NB! Please note that the current script finetunes "text-davinci", but that this will be deprecated on the 4th of January 2024
 Read more on: https://openai.com/blog/gpt-4-api-general-availability
 '''
 

@@ -45,6 +45,8 @@ Refer to [README.md](src/process_articles/README.md) located in `src/process_art
 ### [2] Fine-Tuning and Text Generation with GPT-3
 To fine-tune and/or generate text with GPT-3 with dummy data, refer to the [README.md](src/gpt3/README.md) located in `src/gpt3`. 
 
+> ⚠️ `NOTE!` The current script finetunes  "text-davinci", but this will be deprecated on the 4th of January 2024. You can read more on about this at https://openai.com/blog/gpt-4-api-general-availability.
+
 ### [3] Experiment A: Analysis of Human Participants  
 To run the analysis, please refer to the Rmarkdown `exp-a-analysis.Rmd` in the `src` folder. 
 
