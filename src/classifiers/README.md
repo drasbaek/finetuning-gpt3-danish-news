@@ -30,9 +30,25 @@ The fine-tuned `BERT` can be accessed from the Hugging Face Hub: [MinaAlmasi/dkn
 
 
 ## [OPTIONAL] Pushing to HF Hub
-Pushing models to the [Hugging Face Hub](https://huggingface.co/models) is disabled by default in all scripts. If you wish to push models to the Hugging Face Hub, you need to firstly save a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens) in a .txt file called ```hf_token.txt``` in the `tokens` folder.
+Pushing models to the [Hugging Face Hub](https://huggingface.co/models) is disabled by default. If you wish to push models to the Hugging Face Hub, follow the steps below. 
 
-Then please run the lines in the chunk below. 
+### Saving a HF Token
+Firstly, you need to save a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens) in a .txt file called ```hf_token.txt``` in the `tokens` folder.
+
+### Installing GIT-LFS
+Then, install `git-lfs` on your system. ⚠️ `NOTE!` This wil `SUDO` install to your system, `do at own risk`!
+```
+bash git-lfs-setup.sh
+```
+
+### Upgrading Transformers 
+Now, upgrade transformers to the newest version:
+```
+pip install --upgrade transformers
+```
+
+### Enabling Pushing to HF Hub
+Finally, you can run the lines in the chunk below:
 
 ```
 # activate env
