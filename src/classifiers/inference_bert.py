@@ -65,7 +65,7 @@ def main():
     data = pd.read_csv(datapath / "test_data_classifier.csv")
 
     # initialize pipeline
-    print("Initalizing pipeline")
+    print("Initalizing pipeline ...")
     classifier = pipeline("text-classification", 
                       model="MinaAlmasi/dknews-NB-BERT-AI-classifier", 
                       return_all_scores=True,
@@ -73,11 +73,10 @@ def main():
                       )
 
     # do classification
-    print("Performing inference")
     classify_data = classify(classifier, data, "text")
 
     # save data
-    classify_data.to_csv(path.parents[2] / "dummy_results" / "bert_predictions.csv")
+    classify_data.to_csv(path.parents[2] / "results" / "classifier_predictions" / "bert_predictions.csv")
 
     # print statement
     print("[INFO:] Classification completed!")
