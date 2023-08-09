@@ -148,7 +148,7 @@ def main():
     print(finetune_mdl)
 
     # get results
-    get_results(finetune_id, path.parents[0] / "gpt3-ft-loss-dummy.csv")
+    get_results(finetune_id, path.parents[2] / "dummy_results"  / "gpt3" / "gpt3-ft-loss-dummy.csv")
 
 if __name__ == "__main__":
     main()

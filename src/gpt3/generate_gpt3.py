@@ -109,7 +109,7 @@ def main():
     completions_data = generate_text_from_data(existing_finetune, data)
 
     # save data
-    path_outfile = path.parents[0] / "dummy_synthetic_generations.csv"
+    path_outfile = path.parents[2] / "dummy_results" / "gpt3" /  "dummy_synthetic_generations.csv"
     completions_data.to_csv(path_outfile, index=False)
 
     # print 
