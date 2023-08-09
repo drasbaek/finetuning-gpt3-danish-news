@@ -26,7 +26,7 @@ The repository is structured as such:
 | ```simple_classifier.sh``` | Run to reproduce classifier pipelines|
 | ```bert_classifier.sh``` | Run to reproduce BERT pipeline|
 
-⚠️ `NOTE!` The files in `results`, `plots` and `data` contain actual data pertaining to (Almasi & Schiønning, 2023) while files in `dummy_data` and `dummy_results` do not.
+Please note that the files in `results`, `plots` and `data` contain actual data pertaining to (Almasi & Schiønning, 2023) while the files in `dummy_data` and `dummy_results` do not.
 
 ## Pipeline 
 For this project, Python (version 3.10) and R was used. Python's [venv](https://docs.python.org/3/library/venv.html) needs to be installed for the setup to work.
@@ -37,7 +37,7 @@ To install necessary requirements in a virtual environment (`env`), please run t
 bash setup.sh
 ```
 
-⚠️ `NOTE!` The individual technical pipelines may require extra setup. These steps are explained in their respective `README's`. 
+The individual technical pipelines may require extra setup. These steps are explained in their respective `README's`. 
 
 ### [1] Article Preprocessing
 Refer to [README.md](src/process_articles/README.md) located in `src/process_articles` to reproduce the article preprocessing. 
