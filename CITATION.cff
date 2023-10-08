@@ -3,7 +3,7 @@ title: Fine-Tuning GPT-3 for Synthetic Danish News Generation
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
-type: software
+type: conference-paper
 authors:
   - given-names: Almasi
     family-names: Mina
@@ -20,6 +20,11 @@ authors:
 identifiers:
   - type: url
     value: 'https://aclanthology.org/2023.inlg-main.4'
+publisher:
+    name: Association for Computational Linguistics
+volume-title: >-
+    Proceedings of the 16th International Natural Language Generation Conference
+pages: 54-68
 abstract: >
   While GPT-3 has garnered significant attention for its
   capabilities in natural language generation, research on
