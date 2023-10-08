@@ -1,0 +1,19 @@
+cff-version: 1.3.0
+
+authors:
+  - family-names: Almasi
+    given-names: Mina
+    affiliation: "Aarhus University, Department of Linguistics, Cognitive Science and Semiotics"
+  - family-names: Schiønning
+    given-names: Anton
+    affiliation: "Aarhus University, Department of Linguistics, Cognitive Science and Semiotics"
+
+title: Fine-Tuning GPT-3 for Synthetic Danish News Generation
+year: 2023
+type: conference-paper
+proceedings: "Proceedings of the 16th International Natural Language Generation Conference"
+publisher: "Association for Computational Linguistics"
+pages: "54–68"
+address: "Prague, Czechia"
+url: "https://aclanthology.org/2023.inlg-main.4"
+date-released: 2023-09
