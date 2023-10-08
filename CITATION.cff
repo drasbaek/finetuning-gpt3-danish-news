@@ -22,9 +22,9 @@ identifiers:
     value: 'https://aclanthology.org/2023.inlg-main.4'
 publisher:
     name: Association for Computational Linguistics
-volume-title: >-
-    Proceedings of the 16th International Natural Language Generation Conference
-pages: 54-68
+volume-title: Proceedings of the 16th International Natural Language Generation Conference
+start: 54
+end: 68
 abstract: >
   While GPT-3 has garnered significant attention for its
   capabilities in natural language generation, research on
