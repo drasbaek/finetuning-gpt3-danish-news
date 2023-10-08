@@ -1,59 +1,27 @@
 cff-version: 1.2.0
-title: Fine-Tuning GPT-3 for Synthetic Danish News Generation
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
-type: conference-paper
-authors:
-  - given-names: Almasi
-    family-names: Mina
-    email: mina.almasi@post.au.dk
-    affiliation: >-
-      Aarhus University, Department of Linguistics,
-      Cognitive Science and Semiotics
-  - given-names: Schiønning
-    family-names: Anton
-    email: drasbaek@post.au.dk
-    affiliation: >-
-      Aarhus University, Department of Linguistics,
-      Cognitive Science and Semiotic
-identifiers:
-  - type: url
-    value: 'https://aclanthology.org/2023.inlg-main.4'
-abstract: >
-  While GPT-3 has garnered significant attention for its
-  capabilities in natural language generation, research on
-  its use outside of English is still relatively limited. We
-  focus on how GPT-3 can be fine-tuned for generating
-  synthetic news articles in a low-resource language, namely
-  Danish. The model’s performance is evaluated on the
-  dimensions of human and machine detection in two separate
-  experiments. When presented with either a real or GPT-3
-  generated news article, human participants achieve a 58.1%
-  classification accuracy. Contrarily, a fine-tuned BERT
-  classifier obtains a 92.7% accuracy on the same task. This
-  discrepancy likely pertains to the fine-tuned GPT-3 model
-  oversampling high-likelihood tokens in its text
-  generation. Although this is undetectable to the human
-  eye, it leaves a statistical discrepancy for machine
-  classifiers to detect. We address how decisions in the
-  experimental design favoured the machine classifiers over
-  the human evaluators, and whether the produced synthetic
-  articles are applicable in a real-world context.
-keywords:
-  - gpt-3
-  - fine-tuning
-  - low-resource language
-  - machine detection
-  - human detection
-year: 2023
-month: 9
-publisher:
-  name: Association for Computational Linguistics
-collection-title: >-
-  "Proceedings of the 16th International Natural Language Generation Conference"
-location:
+message: "If you use this work in a project of yours and write about it, please cite our ACL 2023 paper using the following citation data."
+title: "Fine-Tuning GPT-3 for Synthetic Danish News Generation"
+preferred-citation:
+  type: conference-paper
+  title: >-
+    Fine-Tuning GPT-3 for Synthetic Danish News Generation"
+  authors:
+    - given-names: Mina
+      family-names: Almasi
+      email: mina.almasi@post.au.dk
+      affiliation: Aarhus University, Department of Linguistics, Cognitive Science and Semiotics
+    - given-names: Anton
+      family-names: Schiønning
+      email: drasbaek@post.au.dk
+      affiliation: Aarhus University, Department of Linguistics, Cognitive Science and Semiotics
+  collection-title: >-
+    "Proceedings of the 16th International Natural Language Generation Conference"
+  year: 2023
+  month: 9
+  publisher:
+    name: Association for Computational Linguistics
+  url: https://aclanthology.org/2023.inlg-main.4
+  start: 54
+  end: 68
+  location:
     name: Prague, Czechia
-start: 54
-end: 68
-license: Apache-2.0
