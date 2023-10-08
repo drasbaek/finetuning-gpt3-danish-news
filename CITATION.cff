@@ -20,11 +20,6 @@ authors:
 identifiers:
   - type: url
     value: 'https://aclanthology.org/2023.inlg-main.4'
-publisher:
-    name: Association for Computational Linguistics
-collection-title: "Proceedings of the 16th International Natural Language Generation Conference"
-start: 54
-end: 68
 abstract: >
   While GPT-3 has garnered significant attention for its
   capabilities in natural language generation, research on
@@ -51,4 +46,14 @@ keywords:
   - low-resource language
   - machine detection
   - human detection
+year: 2023
+month: 9
+publisher:
+  name: Association for Computational Linguistics
+collection-title: >-
+  "Proceedings of the 16th International Natural Language Generation Conference"
+location:
+    name: Prague, Czechia
+start: 54
+end: 68
 license: Apache-2.0
